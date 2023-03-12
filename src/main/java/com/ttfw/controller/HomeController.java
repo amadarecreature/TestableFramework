@@ -5,8 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ttfw.bean.LogicInputBean;
-import com.ttfw.logic.HomeLogic;
+import com.ttfw.bean.HomeIndexInBean;
+import com.ttfw.bean.HomeIndexOutBean;
+import com.ttfw.logic.HomeIndexLogic;
 
 import lombok.AllArgsConstructor;
 
@@ -16,15 +17,16 @@ import lombok.AllArgsConstructor;
 public class HomeController {
 
     @Autowired
-    HomeLogic logic;
+    HomeIndexLogic logic;
 
     @RequestMapping
-    public ModelAndView index() {
+    public ModelAndView index(String id) {
 
-        LogicInputBean input = new LogicInputBean();
-        LogicOutputBean result = logic.execute(input);
+        HomeIndexInBean input = logic.inputConverter(id);
 
-        return new ModelAndView("home", "user", result.getUser());
+        HomeIndexOutBean result = logic.execute(input);
+
+        return new ModelAndView("home", "models", result);
     }
 
 }
